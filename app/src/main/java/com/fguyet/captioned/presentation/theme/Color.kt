@@ -1,4 +1,4 @@
-package com.fguyet.captioned.ui.theme
+package com.fguyet.captioned.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
