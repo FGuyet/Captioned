@@ -1,11 +1,12 @@
 package com.fguyet.captioned.presentation.screen.welcome
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,22 +38,25 @@ internal fun WelcomeScreen(
     }
 
     CaptionedScreen {
-        Column(
+        Box(
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
         ) {
             // TODO add animation
             Image(
-                painter = androidx.compose.ui.res.painterResource(id = R.drawable.ic_launcher_foreground),
+                modifier = Modifier
+                    .size(200.dp)
+                    .align(Alignment.TopCenter),
+                painter = androidx.compose.ui.res.painterResource(id = R.drawable.app_logo),
                 contentDescription = stringResource(R.string.app_name)
             )
-            WelcomeHeadlines()
+            WelcomeHeadlines(modifier = Modifier.align(Alignment.Center))
             Button(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
                 onClick = { welcomeViewModel.login() }
             ) {
                 Text(
