@@ -15,10 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 internal fun CaptionedScreen(
@@ -31,7 +31,9 @@ internal fun CaptionedScreen(
     Scaffold(
         modifier = modifier
             .fillMaxSize()
-            .alpha(if (isLoading) 0.5f else 1f),
+            .let {
+                if (isLoading) it.shimmer() else it
+            },
         content = { scaffoldPaddingValues ->
             val contentPaddingValues = PaddingValues(
                 top = 16.dp + scaffoldPaddingValues.calculateTopPadding(),

@@ -3,19 +3,17 @@ package com.fguyet.captioned.presentation.screen.feed
 import com.fguyet.captioned.core.commons.CaptionedViewModel
 import com.fguyet.captioned.domain.entity.Capture
 import com.fguyet.captioned.domain.usecase.GetActiveUserCaptureUseCase
-import com.fguyet.captioned.domain.usecase.GetCaptionUseCase
-import com.fguyet.captioned.domain.usecase.GetCommunityCapturesUseCase
 import com.fguyet.captioned.domain.usecase.GetCurrentCaptionUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendCapturesUseCase
+import com.fguyet.captioned.domain.usecase.GetFriendsUseCase
 import com.fguyet.captioned.domain.usecase.GetUserNameUseCase
 import kotlinx.coroutines.coroutineScope
 
 internal class FeedViewModel(
     private val getUserCaptureUseCase: GetActiveUserCaptureUseCase,
     private val getFriendCapturesUseCase: GetFriendCapturesUseCase,
-    private val getCommunityCapturesUseCase: GetCommunityCapturesUseCase,
+    private val getFriendsUseCase: GetFriendsUseCase,
     private val getUserNameUseCase: GetUserNameUseCase,
-    private val getCaptionUseCase: GetCaptionUseCase,
     private val getCurrentCaptionUseCase: GetCurrentCaptionUseCase
 ) : CaptionedViewModel<FeedUiState>(initialUiState = FeedUiState(isLoading = true)) {
 
@@ -24,16 +22,16 @@ internal class FeedViewModel(
             updateUiState { copy(isLoading = true) }
             coroutineScope {
                 launch {
-                    updateUiState { copy(caption = getCurrentCaptionUseCase()) }
+                    val caption = getCurrentCaptionUseCase()
+                    updateUiState { copy(caption = caption) }
                 }
                 launch {
-                    updateUiState { copy(userCaptureUiItem = getUserCaptureUseCase()?.toCaptureUiItem()) }
+                    val userCaptureUiItem = getUserCaptureUseCase()?.toCaptureUiItem()
+                    updateUiState { copy(userCaptureUiItem = userCaptureUiItem) }
                 }
                 launch {
-                    updateUiState { copy(friendsCaptureUiItems = getFriendCapturesUseCase().map { it.toCaptureUiItem() }) }
-                }
-                launch {
-                    updateUiState { copy(communityCaptureUiItems = getCommunityCapturesUseCase().map { it.toCaptureUiItem() }) }
+                    val friendsCaptureUiItems = getFriendCapturesUseCase().map { it.toCaptureUiItem() }
+                    updateUiState { copy(friendsCaptureUiItems = friendsCaptureUiItems) }
                 }
             }
             updateUiState { copy(isLoading = false) }
@@ -44,6 +42,5 @@ internal class FeedViewModel(
         id = id.id,
         userName = getUserNameUseCase(userId) ?: "Unknown",
         imageRes = imageRes,
-        caption = getCaptionUseCase(captionId).text,
     )
 }

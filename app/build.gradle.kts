@@ -48,7 +48,9 @@ android {
 
 dependencies {
     // TODO use TOML file for dependencies
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("io.insert-koin:koin-core:4.0.3")
     implementation("io.insert-koin:koin-android:4.0.3")
     implementation("io.insert-koin:koin-androidx-workmanager:4.0.3")

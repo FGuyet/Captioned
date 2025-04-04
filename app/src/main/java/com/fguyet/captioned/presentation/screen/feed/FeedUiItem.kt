@@ -12,6 +12,7 @@ sealed class FeedUiItem {
         val id: String,
         val userName: String,
         val imageRes: ImageRes,
-        val caption: String,
     ) : FeedUiItem()
+
+    data object CapturePlaceHolder : FeedUiItem()
 }

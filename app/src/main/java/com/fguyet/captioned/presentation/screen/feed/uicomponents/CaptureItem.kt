@@ -1,7 +1,6 @@
-package com.fguyet.captioned.presentation.screen.feed.capture
+package com.fguyet.captioned.presentation.screen.feed.uicomponents
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -23,9 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.fguyet.captioned.R
 import com.fguyet.captioned.presentation.theme.CaptionedTheme
 
@@ -37,19 +36,16 @@ internal fun CaptureItem(
     isHidden: Boolean,
     isLiked: Boolean,
     onLikeChange: (Boolean) -> Unit = {},
+    onImageLoaded: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .clip(
-                shape = RoundedCornerShape(8.dp)
+        modifier = modifier.pointerInput(isLiked) {
+            detectTapGestures(
+                onDoubleTap = { onLikeChange(!isLiked) },
             )
-            .pointerInput(isLiked) {
-                detectTapGestures(
-                    onDoubleTap = { onLikeChange(!isLiked) },
-                )
-            },
+        },
     ) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
                 .let {
@@ -59,16 +55,17 @@ internal fun CaptureItem(
                         edgeTreatment = BlurredEdgeTreatment.Unbounded
                     ) else it
                 },
-            painter = painterResource(id = imageResId),
+            model = imageResId,
+            onSuccess = { onImageLoaded() },
             contentScale = ContentScale.Crop,
             contentDescription = "Hidding layer",
             colorFilter = ColorFilter.tint(Color.DarkGray, blendMode = BlendMode.Darken).takeIf { isHidden }
         )
 
         if (isHidden) {
-            Image(
+            AsyncImage(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.app_logo),
+                model = R.drawable.app_logo,
                 contentDescription = "Hidding layer",
             )
         }
@@ -95,11 +92,11 @@ internal fun CaptureItem(
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.primary,
             ) {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .size(40.dp)
                         .padding(6.dp),
-                    painter = painterResource(id = if (isLiked) R.drawable.ic_filled_heart else R.drawable.ic_empty_heart),
+                    model = if (isLiked) R.drawable.ic_filled_heart else R.drawable.ic_empty_heart,
                     contentDescription = "Hidding layer",
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                 )
@@ -107,7 +104,6 @@ internal fun CaptureItem(
         }
     }
 }
-
 
 @Preview
 @Composable

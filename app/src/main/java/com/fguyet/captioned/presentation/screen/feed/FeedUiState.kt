@@ -4,8 +4,7 @@ import com.fguyet.captioned.domain.entity.Caption
 
 data class FeedUiState(
     val userCaptureUiItem: FeedUiItem.CaptureUiItem? = null,
-    val friendsCaptureUiItems: List<FeedUiItem.CaptureUiItem> = emptyList(),
-    val communityCaptureUiItems: List<FeedUiItem.CaptureUiItem> = emptyList(),
+    val friendsCaptureUiItems: List<FeedUiItem.CaptureUiItem>? = null,
     val caption: Caption? = null,
     val isLoading: Boolean = false,
     val error: String? = null,

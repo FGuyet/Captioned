@@ -18,6 +18,7 @@ import com.fguyet.captioned.domain.usecase.GetCurrentCaptionUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendCapturesUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendIdsUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendUserIdsUseCase
+import com.fguyet.captioned.domain.usecase.GetFriendsUseCase
 import com.fguyet.captioned.domain.usecase.GetUserNameUseCase
 import com.fguyet.captioned.domain.usecase.LoginUseCase
 import com.fguyet.captioned.domain.usecase.SaveCaptureUseCase
@@ -47,6 +48,7 @@ val domainCaptionedKoinModule = module {
     factoryOf(::GetUserNameUseCase)
     factoryOf(::LoginUseCase)
     factoryOf(::SaveCaptureUseCase)
+    factoryOf(::GetFriendsUseCase)
 }
 
 val dataCaptionedKoinModule = module {
