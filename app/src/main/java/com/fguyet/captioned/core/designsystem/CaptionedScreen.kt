@@ -47,6 +47,7 @@ internal fun CaptionedScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.BottomCenter)
+                            .padding(horizontal = 16.dp)
                             .padding(contentPaddingValues),
                         colors = ButtonDefaults.buttonColors(),
                         onClick = actionButtonConfig.onClick,

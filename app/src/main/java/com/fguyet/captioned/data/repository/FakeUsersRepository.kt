@@ -39,7 +39,12 @@ internal class FakeUsersRepository : UsersRepository {
         ),
     )
 
-    private val fakeUsers = fakeFriends + fakeCommunityUsers
+    private val activeUser = User(
+        id = FakeAccountRepository.fakeUserId,
+        name = "Florian G."
+    )
+
+    private val fakeUsers = fakeFriends + fakeCommunityUsers + activeUser
 
     override fun getUser(userId: UserId): User? = fakeUsers.firstOrNull { it.id == userId }
 }

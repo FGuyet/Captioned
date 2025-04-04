@@ -8,10 +8,10 @@ import kotlin.time.Duration.Companion.seconds
 internal class FakeAccountRepository : AccountRepository {
     override var userId: UserId? = null
 
-    override suspend fun createUser() {
+    override suspend fun login(): UserId {
         // Simulate a delay to mimic network or database operation
         delay(1.seconds)
-        this.userId = fakeUserId
+        return fakeUserId.also { userId = it }
     }
 
     companion object {

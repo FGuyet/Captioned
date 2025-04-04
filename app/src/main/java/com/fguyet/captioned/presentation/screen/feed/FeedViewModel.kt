@@ -5,6 +5,7 @@ import com.fguyet.captioned.domain.entity.Capture
 import com.fguyet.captioned.domain.usecase.GetActiveUserCaptureUseCase
 import com.fguyet.captioned.domain.usecase.GetCaptionUseCase
 import com.fguyet.captioned.domain.usecase.GetCommunityCapturesUseCase
+import com.fguyet.captioned.domain.usecase.GetCurrentCaptionUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendCapturesUseCase
 import com.fguyet.captioned.domain.usecase.GetUserNameUseCase
 import kotlinx.coroutines.coroutineScope
@@ -15,12 +16,16 @@ internal class FeedViewModel(
     private val getCommunityCapturesUseCase: GetCommunityCapturesUseCase,
     private val getUserNameUseCase: GetUserNameUseCase,
     private val getCaptionUseCase: GetCaptionUseCase,
+    private val getCurrentCaptionUseCase: GetCurrentCaptionUseCase
 ) : CaptionedViewModel<FeedUiState>(initialUiState = FeedUiState(isLoading = true)) {
 
     fun refreshData() {
         launch {
             updateUiState { copy(isLoading = true) }
             coroutineScope {
+                launch {
+                    updateUiState { copy(caption = getCurrentCaptionUseCase()) }
+                }
                 launch {
                     updateUiState { copy(userCaptureUiItem = getUserCaptureUseCase()?.toCaptureUiItem()) }
                 }

@@ -4,7 +4,8 @@ import com.fguyet.captioned.core.commons.CaptionedViewModel
 import com.fguyet.captioned.domain.usecase.LoginUseCase
 
 internal class WelcomeViewModel(private val loginUseCase: LoginUseCase) : CaptionedViewModel<WelcomeUiState>(initialUiState = WelcomeUiState()) {
-    fun login() {
+
+    fun register() {
         launch {
             updateUiState { copy(isLoading = true) }
             loginUseCase()

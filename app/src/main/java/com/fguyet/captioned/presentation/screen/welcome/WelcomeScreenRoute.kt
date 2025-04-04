@@ -24,6 +24,9 @@ internal fun WelcomeScreenRoute(
     WelcomeScreen(
         modifier = modifier,
         uiState = uiState,
-        onSignIn = { welcomeViewModel.login() },
+        onSignIn = {
+            // TODO real sign in
+            welcomeViewModel.register()
+        },
     )
 }
