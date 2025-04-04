@@ -20,6 +20,8 @@ import com.fguyet.captioned.domain.usecase.GetFriendIdsUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendUserIdsUseCase
 import com.fguyet.captioned.domain.usecase.GetUserNameUseCase
 import com.fguyet.captioned.domain.usecase.LoginUseCase
+import com.fguyet.captioned.domain.usecase.SaveCaptureUseCase
+import com.fguyet.captioned.presentation.screen.capture.CaptureViewModel
 import com.fguyet.captioned.presentation.screen.feed.FeedViewModel
 import com.fguyet.captioned.presentation.screen.welcome.WelcomeViewModel
 import org.koin.core.module.dsl.factoryOf
@@ -30,6 +32,7 @@ import org.koin.dsl.module
 val presentationCaptionedKoinModule = module {
     viewModelOf(::FeedViewModel)
     viewModelOf(::WelcomeViewModel)
+    viewModelOf(::CaptureViewModel)
 }
 
 val domainCaptionedKoinModule = module {
@@ -43,6 +46,7 @@ val domainCaptionedKoinModule = module {
     factoryOf(::GetFriendUserIdsUseCase)
     factoryOf(::GetUserNameUseCase)
     factoryOf(::LoginUseCase)
+    factoryOf(::SaveCaptureUseCase)
 }
 
 val dataCaptionedKoinModule = module {

@@ -37,10 +37,18 @@ internal class FakeCapturesRepository : CapturesRepository {
         }.filterNotNull()
     }
 
-    override suspend fun saveCapture(capture: Capture) {
+    override suspend fun createCapture(userId: UserId, captionId: CaptionId, imageData: String): Capture {
         // Simulate saving the capture
         delay(FAKE_NETWORK_DELAY)
-        userCapture = capture
+
+        return Capture(
+            id = CaptureId(id = "${captionId.id}_${userId.id}"),
+            userId = userId,
+            // TODO use imageData instead of placeholder
+            imageRes = ImageRes.Placeholder(PlaceholderImageRes.OrganizedChaos(id = 1)),
+            captionId = captionId,
+            dateTime = LocalDateTime.now()
+        ).also { userCapture = it }
     }
 }
 

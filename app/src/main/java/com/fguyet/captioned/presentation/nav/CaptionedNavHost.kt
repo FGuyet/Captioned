@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.fguyet.captioned.presentation.screen.capture.CaptureScreenRoute
 import com.fguyet.captioned.presentation.screen.feed.FeedScreenRoute
 import com.fguyet.captioned.presentation.screen.welcome.WelcomeScreenRoute
 
@@ -33,7 +34,16 @@ internal fun CaptionedNavHost(navController: NavHostController) {
                 }
             )
         }
-        composable(route = NavRoute.CAPTURE) {}
+        composable(route = NavRoute.CAPTURE) {
+            CaptureScreenRoute(
+                onCaptureCompleted = {
+                    navController.popBackStack()
+                },
+                onCaptureCancelled = {
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }
 

@@ -11,5 +11,5 @@ interface CapturesRepository {
      * @return A list of captures for the specified users and caption.
      */
     suspend fun getCaptures(captionId: CaptionId, userIds: List<UserId>? = null): List<Capture>
-    suspend fun saveCapture(capture: Capture)
+    suspend fun createCapture(userId: UserId, captionId: CaptionId, imageData: String): Capture
 }
