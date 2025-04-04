@@ -10,8 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 private val FAKE_NETWORK_DELAY = 1.seconds
 
-class FakeCapturesRepository(private val fakeUserId: UserId) : CapturesRepository {
-    private var connectedUserCapture: Capture? = null
+class FakeCapturesRepository : CapturesRepository {
 
     private val communityUserIds by lazy { (1..10).map { UserId(id = "user_$it") } }
 
@@ -22,7 +21,6 @@ class FakeCapturesRepository(private val fakeUserId: UserId) : CapturesRepositor
         val userIdList = userIds ?: communityUserIds
 
         return userIdList.map { userId ->
-            if (userId == fakeUserId) return@map connectedUserCapture
             val captureId = CaptureId(id = "${captionId.id}_${userId.id}")
             Capture(
                 id = captureId,
@@ -30,7 +28,7 @@ class FakeCapturesRepository(private val fakeUserId: UserId) : CapturesRepositor
                 imageUri = "https://example.com/$captureId.jpg",
                 captionId = captionId
             )
-        }.filterNotNull()
+        }
     }
 }
 

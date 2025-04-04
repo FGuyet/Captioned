@@ -10,6 +10,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,12 +20,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fguyet.captioned.R
 import com.fguyet.captioned.core.designsystem.CaptionedScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
-    onSignIn: () -> Unit,
+    onSignedIn: () -> Unit,
+    welcomeViewModel: WelcomeViewModel = koinViewModel()
 ) {
+    val uiState by welcomeViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.isLoggedIn) {
+        if (uiState.isLoggedIn) {
+            onSignedIn()
+        }
+    }
+
     CaptionedScreen {
         Column(
             modifier = modifier
@@ -40,7 +53,7 @@ fun WelcomeScreen(
             WelcomeHeadlines()
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = onSignIn
+                onClick = { welcomeViewModel.login() }
             ) {
                 Text(
                     modifier = Modifier.padding(4.dp),
@@ -71,6 +84,7 @@ private fun WelcomeHeadlines(modifier: Modifier = Modifier) {
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(
-        onSignIn = {}
+        onSignedIn = {}
     )
 }
+

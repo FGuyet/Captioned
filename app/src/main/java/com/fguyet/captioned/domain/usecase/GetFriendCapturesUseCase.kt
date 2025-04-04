@@ -1,5 +1,6 @@
 package com.fguyet.captioned.domain.usecase
 
+import com.fguyet.captioned.domain.entity.Capture
 import com.fguyet.captioned.domain.repository.CapturesRepository
 
 class GetFriendCapturesUseCase(
@@ -8,8 +9,11 @@ class GetFriendCapturesUseCase(
     private val capturesRepository: CapturesRepository,
     private val getCurrentCaptionIdUseCase: GetCurrentCaptionUseCase
 ) {
-    suspend operator fun invoke() = capturesRepository.getCaptures(
-        userIds = getFriendUserIdsUseCase(getActiveUserIdUseCase()),
-        captionId = getCurrentCaptionIdUseCase().id
-    )
+    suspend operator fun invoke(): List<Capture> {
+        val userId = getActiveUserIdUseCase() ?: return emptyList()
+        return capturesRepository.getCaptures(
+            userIds = getFriendUserIdsUseCase(userId),
+            captionId = getCurrentCaptionIdUseCase().id
+        )
+    }
 }
