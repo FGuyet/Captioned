@@ -5,6 +5,6 @@ import com.fguyet.captioned.domain.repository.CaptionsRepository
 import com.fguyet.captioned.domain.repository.getCaption
 import java.time.ZonedDateTime
 
-class GetCurrentCaptionUseCase(private val captionsRepository: CaptionsRepository) {
+internal class GetCurrentCaptionUseCase(private val captionsRepository: CaptionsRepository) {
     operator fun invoke(): Caption = captionsRepository.getCaption(ZonedDateTime.now())
 }

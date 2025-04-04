@@ -3,7 +3,7 @@ package com.fguyet.captioned.domain.usecase
 import com.fguyet.captioned.domain.entity.Capture
 import com.fguyet.captioned.domain.repository.CapturesRepository
 
-class GetFriendCapturesUseCase(
+internal class GetFriendCapturesUseCase(
     private val getActiveUserIdUseCase: GetActiveUserIdUseCase,
     private val getFriendUserIdsUseCase: GetFriendUserIdsUseCase,
     private val capturesRepository: CapturesRepository,

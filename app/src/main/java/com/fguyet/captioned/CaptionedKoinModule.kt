@@ -1,12 +1,14 @@
 package com.fguyet.captioned
 
+import com.fguyet.captioned.data.repository.FakeAccountRepository
 import com.fguyet.captioned.data.repository.FakeCaptionsRepository
 import com.fguyet.captioned.data.repository.FakeCapturesRepository
-import com.fguyet.captioned.data.repository.FakeUserAccountRepository
+import com.fguyet.captioned.data.repository.FakeFriendsRepository
 import com.fguyet.captioned.data.repository.FakeUsersRepository
+import com.fguyet.captioned.domain.repository.AccountRepository
 import com.fguyet.captioned.domain.repository.CaptionsRepository
 import com.fguyet.captioned.domain.repository.CapturesRepository
-import com.fguyet.captioned.domain.repository.UserAccountRepository
+import com.fguyet.captioned.domain.repository.FriendsRepository
 import com.fguyet.captioned.domain.repository.UsersRepository
 import com.fguyet.captioned.domain.usecase.GetActiveUserCaptureUseCase
 import com.fguyet.captioned.domain.usecase.GetActiveUserIdUseCase
@@ -46,8 +48,9 @@ val domainCaptionedKoinModule = module {
 val dataCaptionedKoinModule = module {
     single<CaptionsRepository> { FakeCaptionsRepository() }
     single<CapturesRepository> { FakeCapturesRepository() }
-    single<UserAccountRepository> { FakeUserAccountRepository() }
+    single<AccountRepository> { FakeAccountRepository() }
     single<UsersRepository> { FakeUsersRepository() }
+    single<FriendsRepository> { FakeFriendsRepository() }
 }
 
 val captionedKoinModule = module {

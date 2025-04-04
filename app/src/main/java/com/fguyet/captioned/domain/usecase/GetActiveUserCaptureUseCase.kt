@@ -3,7 +3,7 @@ package com.fguyet.captioned.domain.usecase
 import com.fguyet.captioned.domain.entity.Capture
 import com.fguyet.captioned.domain.repository.CapturesRepository
 
-class GetActiveUserCaptureUseCase(
+internal class GetActiveUserCaptureUseCase(
     private val getActiveUserIdUseCase: GetActiveUserIdUseCase,
     private val capturesRepository: CapturesRepository,
     private val getCurrentCaptionIdUseCase: GetCurrentCaptionUseCase
@@ -13,6 +13,6 @@ class GetActiveUserCaptureUseCase(
         return capturesRepository.getCaptures(
             userIds = listOf(activeUserId),
             captionId = getCurrentCaptionIdUseCase().id
-        ).first()
+        ).firstOrNull()
     }
 }

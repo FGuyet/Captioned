@@ -1,6 +1,8 @@
 package com.fguyet.captioned.domain.repository
 
+import com.fguyet.captioned.domain.entity.User
+
 interface UsersRepository {
-    fun getFriendIds(userId: UserId): List<UserId>
-    fun getUserName(userId: UserId): String?
+    fun getUser(userId: UserId): User?
 }
+

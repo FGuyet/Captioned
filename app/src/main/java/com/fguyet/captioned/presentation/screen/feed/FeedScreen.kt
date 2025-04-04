@@ -1,10 +1,13 @@
 package com.fguyet.captioned.presentation.screen.feed
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,51 +18,91 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fguyet.captioned.R
 import com.fguyet.captioned.core.designsystem.CaptionedScreen
+import com.fguyet.captioned.domain.entity.ImageRes
+import com.fguyet.captioned.domain.entity.PlaceholderImageRes
 import com.fguyet.captioned.presentation.screen.feed.capture.CaptureItem
 import com.fguyet.captioned.presentation.theme.CaptionedTheme
 
-private val fakeImages = listOf(
-    R.drawable.organized_chaos_2,
-    R.drawable.organized_chaos_3,
-    R.drawable.organized_chaos_4
-)
 
 @Composable
-fun FeedScreen(
+internal fun FeedScreen(
     modifier: Modifier = Modifier,
     uiState: FeedUiState,
     onCapture: () -> Unit = {},
 ) {
-    CaptionedScreen(modifier) {
-        LazyColumn(
+    CaptionedScreen(modifier) { paddingValues ->
+        Column(
             modifier = Modifier
-                .padding(it)
+                .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            itemsIndexed(uiState.friendsCaptureUiItems) { index, item ->
-                // TODO store info in view model and repository
-                var liked by remember { mutableStateOf(false) }
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = "Today's caption is: ${uiState.caption}",
+                style = MaterialTheme.typography.titleLarge,
+            )
+            LazyColumn {
+                val items = buildList {
+                    add(FeedUiItem.CategoryTitle("Your take"))
+                    add(uiState.userCaptureUiItem)
+                    add(FeedUiItem.CategoryTitle("Your friends' takes"))
+                    addAll(uiState.friendsCaptureUiItems)
+                }.filterNotNull()
 
-                CaptureItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f, true)
-                        .padding(vertical = 16.dp),
-                    // TODO fetch image from network based on imageUri
-                    imageResId = fakeImages[index],
-                    userName = item.userName,
-                    isHidden = !uiState.canViewCaptures,
-                    isLiked = liked,
-                    onLikeChange = { liked = it },
-                )
+                itemsIndexed(items) { _, item ->
+                    // TODO store info in view model and repository
+                    when (item) {
+                        is FeedUiItem.CaptureUiItem -> {
+                            var liked by remember { mutableStateOf(false) }
+
+                            CaptureItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1f, true)
+                                    .padding(vertical = 16.dp),
+                                // TODO fetch image remotely when imageRes is Remote
+                                imageResId = item.imageRes.drawableResId,
+                                userName = item.userName,
+                                isHidden = !uiState.canViewCaptures,
+                                isLiked = liked,
+                                onLikeChange = { liked = it },
+                            )
+                        }
+
+                        is FeedUiItem.CategoryTitle -> {
+                            Text(
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                text = item.title,
+                                style = MaterialTheme.typography.titleLarge,
+                            )
+                        }
+                    }
+                }
             }
         }
     }
 }
 
+private val ImageRes.drawableResId
+    get() = when (this) {
+        is ImageRes.Placeholder -> placeholderImageRes.drawableResId
+        is ImageRes.Remote -> R.drawable.app_logo
+    }
+
+private val PlaceholderImageRes.drawableResId
+    get() = when (this) {
+        is PlaceholderImageRes.OrganizedChaos -> when (id % 4) {
+            0 -> R.drawable.organized_chaos_4
+            1 -> R.drawable.organized_chaos_1
+            2 -> R.drawable.organized_chaos_2
+            3 -> R.drawable.organized_chaos_3
+            else -> R.drawable.app_logo
+        }
+    }
+
 @Preview
 @Composable
-fun FeedScreenPreview() {
+internal fun FeedScreenPreview() {
     CaptionedTheme {
         FeedScreen(
             uiState = FeedUiState(
@@ -67,13 +110,13 @@ fun FeedScreenPreview() {
                     FeedUiItem.CaptureUiItem(
                         id = "1",
                         userName = "User Name",
-                        imageUri = "TODO()",
+                        imageRes = ImageRes.Placeholder(PlaceholderImageRes.OrganizedChaos(id = 2)),
                         caption = "TODO()",
                     ),
                     FeedUiItem.CaptureUiItem(
                         id = "2",
                         userName = "User Name",
-                        imageUri = "TODO()",
+                        imageRes = ImageRes.Placeholder(PlaceholderImageRes.OrganizedChaos(id = 3)),
                         caption = "TODO()",
                     ),
                 ),

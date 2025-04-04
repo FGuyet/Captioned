@@ -2,7 +2,7 @@ package com.fguyet.captioned.domain.usecase
 
 import com.fguyet.captioned.domain.repository.CapturesRepository
 
-class GetCommunityCapturesUseCase(
+internal class GetCommunityCapturesUseCase(
     private val capturesRepository: CapturesRepository,
     private val getCurrentCaptionIdUseCase: GetCurrentCaptionUseCase
 ) {

@@ -1,7 +1,7 @@
 package com.fguyet.captioned.domain.usecase
 
-import com.fguyet.captioned.domain.repository.UserAccountRepository
+import com.fguyet.captioned.domain.repository.AccountRepository
 
-class GetActiveUserIdUseCase(private val userAccountRepository: UserAccountRepository) {
+internal class GetActiveUserIdUseCase(private val userAccountRepository: AccountRepository) {
     operator fun invoke() = userAccountRepository.userId
 }

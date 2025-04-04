@@ -8,7 +8,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 
 
 @Composable
-fun LaunchOnLifecycleEvent(
+internal fun LaunchOnLifecycleEvent(
     onEvent: (Lifecycle.Event) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current

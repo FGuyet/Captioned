@@ -1,5 +1,7 @@
 package com.fguyet.captioned.presentation.screen.feed
 
+import com.fguyet.captioned.domain.entity.ImageRes
+
 
 sealed class FeedUiItem {
     data class CategoryTitle(
@@ -9,7 +11,7 @@ sealed class FeedUiItem {
     data class CaptureUiItem(
         val id: String,
         val userName: String,
-        val imageUri: String,
+        val imageRes: ImageRes,
         val caption: String,
     ) : FeedUiItem()
 }

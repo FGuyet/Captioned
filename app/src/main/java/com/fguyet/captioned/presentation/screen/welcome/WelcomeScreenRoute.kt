@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun WelcomeScreenRoute(
+internal fun WelcomeScreenRoute(
     modifier: Modifier = Modifier,
     onSignIn: () -> Unit,
 ) {

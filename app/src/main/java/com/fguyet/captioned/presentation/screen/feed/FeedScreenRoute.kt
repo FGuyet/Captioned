@@ -9,7 +9,7 @@ import com.fguyet.captioned.core.commons.LaunchOnLifecycleEvent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun FeedScreenRoute(
+internal fun FeedScreenRoute(
     modifier: Modifier = Modifier,
     onCapture: () -> Unit,
     viewModel: FeedViewModel = koinViewModel()

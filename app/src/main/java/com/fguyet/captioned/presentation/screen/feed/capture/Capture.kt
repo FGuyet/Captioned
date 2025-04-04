@@ -30,7 +30,7 @@ import com.fguyet.captioned.R
 import com.fguyet.captioned.presentation.theme.CaptionedTheme
 
 @Composable
-fun CaptureItem(
+internal fun CaptureItem(
     modifier: Modifier = Modifier,
     @DrawableRes imageResId: Int,
     userName: String,
@@ -111,7 +111,7 @@ fun CaptureItem(
 
 @Preview
 @Composable
-fun CaptureItemPreview() {
+internal fun CaptureItemPreview() {
     CaptionedTheme {
         CaptureItem(
             modifier = Modifier.size(300.dp),
@@ -125,7 +125,7 @@ fun CaptureItemPreview() {
 
 @Preview
 @Composable
-fun LikedCaptureItemPreview() {
+internal fun LikedCaptureItemPreview() {
     CaptionedTheme {
         CaptureItem(
             modifier = Modifier.size(300.dp),
@@ -139,7 +139,7 @@ fun LikedCaptureItemPreview() {
 
 @Preview
 @Composable
-fun HiddenCaptureItemPreview() {
+internal fun HiddenCaptureItemPreview() {
     CaptionedTheme {
         CaptureItem(
             modifier = Modifier.size(300.dp),

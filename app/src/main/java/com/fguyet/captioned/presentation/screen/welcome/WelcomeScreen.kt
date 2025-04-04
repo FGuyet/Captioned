@@ -23,7 +23,7 @@ import com.fguyet.captioned.core.designsystem.CaptionedScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun WelcomeScreen(
+internal fun WelcomeScreen(
     modifier: Modifier = Modifier,
     onSignedIn: () -> Unit,
     welcomeViewModel: WelcomeViewModel = koinViewModel()
@@ -82,7 +82,7 @@ private fun WelcomeHeadlines(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun WelcomeScreenPreview() {
+internal fun WelcomeScreenPreview() {
     WelcomeScreen(
         onSignedIn = {}
     )

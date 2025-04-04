@@ -18,7 +18,7 @@ import kotlin.time.Duration.Companion.seconds
 private val initialOffset = 20.seconds
 private val validityDuration = 1.days
 
-class FakeCaptionsRepository : CaptionsRepository {
+internal class FakeCaptionsRepository : CaptionsRepository {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val initialDateTime = ZonedDateTime.now()
 

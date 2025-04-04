@@ -9,7 +9,7 @@ import com.fguyet.captioned.domain.usecase.GetFriendCapturesUseCase
 import com.fguyet.captioned.domain.usecase.GetUserNameUseCase
 import kotlinx.coroutines.coroutineScope
 
-class FeedViewModel(
+internal class FeedViewModel(
     private val getUserCaptureUseCase: GetActiveUserCaptureUseCase,
     private val getFriendCapturesUseCase: GetFriendCapturesUseCase,
     private val getCommunityCapturesUseCase: GetCommunityCapturesUseCase,
@@ -37,8 +37,8 @@ class FeedViewModel(
 
     private fun Capture.toCaptureUiItem(): FeedUiItem.CaptureUiItem = FeedUiItem.CaptureUiItem(
         id = id.id,
-        userName = getUserNameUseCase(userId),
-        imageUri = imageUri,
+        userName = getUserNameUseCase(userId) ?: "Unknown",
+        imageRes = imageRes,
         caption = getCaptionUseCase(captionId).text,
     )
 }

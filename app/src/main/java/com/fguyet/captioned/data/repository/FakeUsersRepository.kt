@@ -1,16 +1,46 @@
 package com.fguyet.captioned.data.repository
 
+import com.fguyet.captioned.domain.entity.User
 import com.fguyet.captioned.domain.repository.UserId
 import com.fguyet.captioned.domain.repository.UsersRepository
 
-class FakeUsersRepository : UsersRepository {
-    private val fakeFriends = listOf(
-        UserId("friend1") to "Marc Zuckerberg",
-        UserId("friend2") to "Elon Musk",
-        UserId("friend3") to "Bill Gates",
-    ).toMap()
+internal class FakeUsersRepository : UsersRepository {
+    private val fakeNames = listOf(
+        "Alice B.",
+        "Bob C.",
+        "Charlie D.",
+        "David E.",
+        "Eve F.",
+        "Frank G.",
+        "Grace H.",
+        "Heidi I.",
+        "Ivan J.",
+    )
 
-    override fun getFriendIds(userId: UserId): List<UserId> = fakeFriends.keys.toList()
+    private val fakeFriends = FakeFriendsRepository.fakeFriendsId.mapIndexed { index, it ->
+        User(
+            id = it,
+            name = fakeNames.getOrNull(index % fakeNames.size) ?: "Anonymous User"
+        )
+    }
 
-    override fun getUserName(userId: UserId): String? = fakeFriends[userId]
+    private val fakeCommunityUsers = listOf(
+        User(
+            id = UserId("community1"),
+            name = "Marc Zuckerberg"
+        ),
+        User(
+            id = UserId("community2"),
+            name = "Elon Musk"
+        ),
+        User(
+            id = UserId("community3"),
+            name = "Bill Gates"
+        ),
+    )
+
+    private val fakeUsers = fakeFriends + fakeCommunityUsers
+
+    override fun getUser(userId: UserId): User? = fakeUsers.firstOrNull { it.id == userId }
 }
+
