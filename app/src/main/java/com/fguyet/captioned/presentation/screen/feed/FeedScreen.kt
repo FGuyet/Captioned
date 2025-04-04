@@ -1,8 +1,11 @@
 package com.fguyet.captioned.presentation.screen.feed
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -14,9 +17,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fguyet.captioned.R
+import com.fguyet.captioned.core.designsystem.CaptionedButtonConfig
 import com.fguyet.captioned.core.designsystem.CaptionedScreen
 import com.fguyet.captioned.domain.entity.ImageRes
 import com.fguyet.captioned.domain.entity.PlaceholderImageRes
@@ -30,57 +35,77 @@ internal fun FeedScreen(
     uiState: FeedUiState,
     onCapture: () -> Unit = {},
 ) {
-    CaptionedScreen(modifier) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
-            Text(
-                modifier = Modifier.padding(bottom = 8.dp),
-                text = "Today's caption is: ${uiState.caption}",
-                style = MaterialTheme.typography.titleLarge,
-            )
-            LazyColumn {
-                val items = buildList {
-                    add(FeedUiItem.CategoryTitle("Your take"))
-                    add(uiState.userCaptureUiItem)
-                    add(FeedUiItem.CategoryTitle("Your friends' takes"))
-                    addAll(uiState.friendsCaptureUiItems)
-                }.filterNotNull()
+    CaptionedScreen(
+        modifier = modifier,
+        isLoading = uiState.isLoading,
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = paddingValues.calculateTopPadding(),
+                        start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                        end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    )
+            ) {
+                Text(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    text = "Today's caption is: ${uiState.caption}",
+                    style = MaterialTheme.typography.titleLarge,
+                )
 
-                itemsIndexed(items) { _, item ->
-                    // TODO store info in view model and repository
-                    when (item) {
-                        is FeedUiItem.CaptureUiItem -> {
-                            var liked by remember { mutableStateOf(false) }
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    val items = buildList {
+                        uiState.userCaptureUiItem?.let {
+                            add(FeedUiItem.CategoryTitle("Your take"))
+                            add(it)
+                        }
+                        add(FeedUiItem.CategoryTitle("Your friends' takes"))
+                        addAll(uiState.friendsCaptureUiItems)
+                    }
 
-                            CaptureItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(1f, true)
-                                    .padding(vertical = 16.dp),
-                                // TODO fetch image remotely when imageRes is Remote
-                                imageResId = item.imageRes.drawableResId,
-                                userName = item.userName,
-                                isHidden = !uiState.canViewCaptures,
-                                isLiked = liked,
-                                onLikeChange = { liked = it },
-                            )
+                    itemsIndexed(items) { index, item ->
+                        // TODO store info in view model and repository
+                        when (item) {
+                            is FeedUiItem.CaptureUiItem -> {
+                                var liked by remember { mutableStateOf(false) }
+
+                                CaptureItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp)
+                                        .aspectRatio(1f, true),
+                                    // TODO fetch image remotely when imageRes is Remote
+                                    imageResId = item.imageRes.drawableResId,
+                                    userName = item.userName,
+                                    isHidden = !uiState.canViewCaptures,
+                                    isLiked = liked,
+                                    onLikeChange = { liked = it },
+                                )
+                            }
+
+                            is FeedUiItem.CategoryTitle -> {
+                                Text(
+                                    modifier = Modifier.padding(vertical = 8.dp),
+                                    text = item.title,
+                                    style = MaterialTheme.typography.titleLarge,
+                                )
+                            }
                         }
 
-                        is FeedUiItem.CategoryTitle -> {
-                            Text(
-                                modifier = Modifier.padding(vertical = 8.dp),
-                                text = item.title,
-                                style = MaterialTheme.typography.titleLarge,
-                            )
+                        if (index == items.lastIndex) {
+                            Spacer(modifier = modifier.height(paddingValues.calculateBottomPadding() + 16.dp))
                         }
                     }
                 }
             }
-        }
-    }
+        },
+        actionButtonConfig = CaptionedButtonConfig(
+            text = "Capture my take",
+            onClick = onCapture,
+            enabled = !uiState.isLoading,
+        ),
+    )
 }
 
 private val ImageRes.drawableResId

@@ -13,7 +13,7 @@ internal fun CaptionedNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = NavRoute.WELCOME) {
         composable(NavRoute.WELCOME) {
             WelcomeScreenRoute(
-                onSignIn = {
+                onSignedIn = {
                     navController.navigate(NavRoute.FEED) {
                         popUpTo(NavRoute.WELCOME) {
                             inclusive = true
