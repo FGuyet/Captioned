@@ -26,6 +26,9 @@ internal fun FeedScreenRoute(
     FeedScreen(
         modifier = modifier,
         onCapture = onCapture,
+        onRemindFriend = { user ->
+            viewModel.remindFriend(user)
+        },
         uiState = uiState
     )
 }

@@ -7,10 +7,6 @@ internal class FakeFriendsRepository : FriendsRepository {
     override fun getFriends(userId: UserId): List<UserId> = fakeFriendsId
 
     companion object {
-        internal val fakeFriendsId = listOf(
-            UserId("friend1"),
-            UserId("friend2"),
-            UserId("friend3"),
-        )
+        internal val fakeFriendsId = (1..10).map { UserId("friend$it") }
     }
 }

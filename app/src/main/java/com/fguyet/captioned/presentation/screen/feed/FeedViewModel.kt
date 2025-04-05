@@ -2,6 +2,7 @@ package com.fguyet.captioned.presentation.screen.feed
 
 import com.fguyet.captioned.core.commons.CaptionedViewModel
 import com.fguyet.captioned.domain.entity.Capture
+import com.fguyet.captioned.domain.entity.User
 import com.fguyet.captioned.domain.usecase.GetActiveUserCaptureUseCase
 import com.fguyet.captioned.domain.usecase.GetCurrentCaptionUseCase
 import com.fguyet.captioned.domain.usecase.GetFriendCapturesUseCase
@@ -30,8 +31,17 @@ internal class FeedViewModel(
                     updateUiState { copy(userCaptureUiItem = userCaptureUiItem) }
                 }
                 launch {
-                    val friendsCaptureUiItems = getFriendCapturesUseCase().map { it.toCaptureUiItem() }
-                    updateUiState { copy(friendsCaptureUiItems = friendsCaptureUiItems) }
+                    val friendCaptures = getFriendCapturesUseCase()
+                    val friendsCaptureUiItems = friendCaptures.map { it.toCaptureUiItem() }
+                    val friends = getFriendsUseCase()
+                    updateUiState {
+                        copy(
+                            friendsCaptureUiItems = friendsCaptureUiItems,
+                            pendingFriendCaptures = friends.filterNot { friend ->
+                                friend.id in friendCaptures.map { it.userId }
+                            }
+                        )
+                    }
                 }
             }
             updateUiState { copy(isLoading = false) }
@@ -43,4 +53,10 @@ internal class FeedViewModel(
         userName = getUserNameUseCase(userId) ?: "Unknown",
         imageRes = imageRes,
     )
+
+    fun remindFriend(user: User) {
+        launch {
+            updateUiState { copy(pendingFriendCaptures = pendingFriendCaptures - user) }
+        }
+    }
 }

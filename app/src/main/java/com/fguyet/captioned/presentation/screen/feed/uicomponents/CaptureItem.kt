@@ -94,8 +94,8 @@ internal fun CaptureItem(
             ) {
                 AsyncImage(
                     modifier = Modifier
-                        .size(40.dp)
-                        .padding(6.dp),
+                        .size(48.dp)
+                        .padding(8.dp),
                     model = if (isLiked) R.drawable.ic_filled_heart else R.drawable.ic_empty_heart,
                     contentDescription = "Hidding layer",
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)

@@ -36,8 +36,8 @@ internal fun CaptionedScreen(
             },
         content = { scaffoldPaddingValues ->
             val contentPaddingValues = PaddingValues(
-                top = 16.dp + scaffoldPaddingValues.calculateTopPadding(),
-                bottom = 16.dp + scaffoldPaddingValues.calculateBottomPadding(),
+                top = 8.dp + scaffoldPaddingValues.calculateTopPadding(),
+                bottom = 8.dp + scaffoldPaddingValues.calculateBottomPadding(),
                 start = 16.dp + scaffoldPaddingValues.calculateStartPadding(LocalLayoutDirection.current),
                 end = 16.dp + scaffoldPaddingValues.calculateEndPadding(LocalLayoutDirection.current)
             )
@@ -49,7 +49,6 @@ internal fun CaptionedScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.BottomCenter)
-                            .padding(horizontal = 16.dp)
                             .padding(contentPaddingValues),
                         colors = ButtonDefaults.buttonColors(),
                         onClick = actionButtonConfig.onClick,

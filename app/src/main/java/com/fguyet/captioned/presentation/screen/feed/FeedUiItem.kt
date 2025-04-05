@@ -1,6 +1,7 @@
 package com.fguyet.captioned.presentation.screen.feed
 
 import com.fguyet.captioned.domain.entity.ImageRes
+import com.fguyet.captioned.domain.entity.User
 
 
 sealed class FeedUiItem {
@@ -15,4 +16,8 @@ sealed class FeedUiItem {
     ) : FeedUiItem()
 
     data object CapturePlaceHolder : FeedUiItem()
+
+    data class RemindFriendItem(val user: User) : FeedUiItem()
+
+    data object InviteFriendAction : FeedUiItem()
 }

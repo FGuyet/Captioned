@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
 
-private val pastHoursOffset = 2.hours
+private val pastHoursOffset = 22.hours
 private val validityDuration = 1.days
 
 internal class FakeCaptionsRepository : CaptionsRepository {

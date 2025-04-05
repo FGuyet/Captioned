@@ -18,6 +18,7 @@ import com.fguyet.captioned.domain.entity.CaptionId
 import com.fguyet.captioned.domain.entity.CaptionValidity
 import com.fguyet.captioned.domain.entity.ImageRes
 import com.fguyet.captioned.domain.entity.PlaceholderImageRes
+import com.fguyet.captioned.domain.entity.User
 import com.fguyet.captioned.presentation.theme.CaptionedTheme
 import java.time.ZonedDateTime
 
@@ -26,6 +27,7 @@ internal fun FeedScreen(
     modifier: Modifier = Modifier,
     uiState: FeedUiState,
     onCapture: () -> Unit = {},
+    onRemindFriend: (user: User) -> Unit = {},
 ) {
     CaptionedScreen(
         modifier = modifier,
@@ -44,7 +46,8 @@ internal fun FeedScreen(
 
                 FeedItems(
                     uiState = uiState,
-                    bottomInnerPadding = paddingValues.calculateBottomPadding() + 16.dp
+                    bottomInnerPadding = paddingValues.calculateBottomPadding() + if (!uiState.canViewCaptures) 48.dp else 0.dp,
+                    onRemindFriend = onRemindFriend,
                 )
             }
         },

@@ -23,18 +23,22 @@ internal class FakeCapturesRepository : CapturesRepository {
 
         val userIdList = userIds ?: communityUserIds
 
-        return userIdList.mapIndexed { index, userId ->
-            if (userId == FakeAccountRepository.fakeUserId) return@mapIndexed userCapture
+        return userIdList
+            // Simulate that only 3 users max have captures
+            .take(3)
+            .mapIndexed { index, userId ->
+                if (userId == FakeAccountRepository.fakeUserId) return@mapIndexed userCapture
 
-            val captureId = CaptureId(id = "${captionId.id}_${userId.id}")
-            Capture(
-                id = captureId,
-                userId = userId,
-                imageRes = ImageRes.Placeholder(PlaceholderImageRes.OrganizedChaos(id = index + 2)),
-                captionId = captionId,
-                dateTime = LocalDateTime.now().minusMinutes((0..120L).random())
-            )
-        }.filterNotNull()
+                val captureId = CaptureId(id = "${captionId.id}_${userId.id}")
+                Capture(
+                    id = captureId,
+                    userId = userId,
+                    imageRes = ImageRes.Placeholder(PlaceholderImageRes.OrganizedChaos(id = index + 2)),
+                    captionId = captionId,
+                    dateTime = LocalDateTime.now().minusMinutes((0..120L).random())
+                )
+            }
+            .filterNotNull()
     }
 
     override suspend fun createCapture(userId: UserId, captionId: CaptionId, imageData: String): Capture {

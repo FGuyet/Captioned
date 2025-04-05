@@ -55,7 +55,7 @@ internal fun CaptionHeader(
                         } else it
                     },
                 text = caption?.text?.let { "“$it”" } ?: "",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
 
