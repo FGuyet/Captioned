@@ -13,6 +13,8 @@ sealed class FeedUiItem {
         val id: String,
         val userName: String,
         val imageRes: ImageRes,
+        val canBeLiked: Boolean = true,
+        val likesCount: Int? = null,
     ) : FeedUiItem()
 
     data object CapturePlaceHolder : FeedUiItem()

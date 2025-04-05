@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,30 +36,33 @@ internal fun CaptureItem(
     userName: String,
     isHidden: Boolean,
     isLiked: Boolean,
+    likesCount: Int? = null,
+    canLike: Boolean = true,
     onLikeChange: (Boolean) -> Unit = {},
     onImageLoaded: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier.pointerInput(isLiked) {
+        modifier = if (canLike) modifier.pointerInput(isLiked) {
             detectTapGestures(
                 onDoubleTap = { onLikeChange(!isLiked) },
             )
-        },
+        }
+        else modifier
     ) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
                 .let {
                     if (isHidden) it.blur(
-                        radiusX = 10.dp,
-                        radiusY = 10.dp,
+                        radiusX = 16.dp,
+                        radiusY = 16.dp,
                         edgeTreatment = BlurredEdgeTreatment.Unbounded
                     ) else it
                 },
             model = imageResId,
             onSuccess = { onImageLoaded() },
             contentScale = ContentScale.Crop,
-            contentDescription = "Hidding layer",
+            contentDescription = "${userName}'s take on today's caption",
             colorFilter = ColorFilter.tint(Color.DarkGray, blendMode = BlendMode.Darken).takeIf { isHidden }
         )
 
@@ -88,18 +92,29 @@ internal fun CaptureItem(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
                     .align(Alignment.BottomEnd)
-                    .clickable { onLikeChange(!isLiked) },
+                    .clickable(enabled = canLike) { onLikeChange(!isLiked) },
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.primary,
             ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(8.dp),
-                    model = if (isLiked) R.drawable.ic_filled_heart else R.drawable.ic_empty_heart,
-                    contentDescription = "Hidding layer",
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    likesCount?.let {
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = it.toString(),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .padding(8.dp),
+                        model = if (isLiked) R.drawable.ic_filled_heart else R.drawable.ic_empty_heart,
+                        contentDescription = "Hidding layer",
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
+                    )
+                }
             }
         }
     }

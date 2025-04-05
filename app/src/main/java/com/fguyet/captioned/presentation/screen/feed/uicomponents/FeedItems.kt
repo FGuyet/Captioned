@@ -15,9 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,36 +45,40 @@ fun FeedItems(
     onRemindFriend: (user: User) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier.fillMaxWidth()) {
-        val items = buildList {
-            uiState.userCaptureUiItem?.let {
-                add(FeedUiItem.CategoryTitle("\uD83D\uDDBC\uFE0F Your take"))
-                add(it)
-            }
-            add(FeedUiItem.CategoryTitle("\uD83D\uDC40 Look at your friends' takes"))
-            uiState.friendsCaptureUiItems?.let { addAll(it) } ?: run {
-                repeat(3) {
-                    add(FeedUiItem.CapturePlaceHolder)
+    val items by remember(uiState) {
+        derivedStateOf {
+            buildList {
+                uiState.userCaptureUiItem?.let {
+                    add(FeedUiItem.CategoryTitle("\uD83D\uDDBC\uFE0F Your take"))
+                    add(it)
                 }
-            }
-
-            if (uiState.canViewCaptures) {
-                uiState.pendingFriendCaptures.takeUnless { it.isEmpty() }?.let { pendingFriendCaptures ->
-                    add(FeedUiItem.CategoryTitle("\uD83D\uDD14 Remind friends to share their takes"))
-                    pendingFriendCaptures.take(3).forEach {
-                        add(FeedUiItem.RemindFriendItem(it))
+                add(FeedUiItem.CategoryTitle("\uD83D\uDC40 Look at your friends' takes"))
+                uiState.friendsCaptureUiItems?.let { addAll(it) } ?: run {
+                    repeat(3) {
+                        add(FeedUiItem.CapturePlaceHolder)
                     }
                 }
 
-                add(FeedUiItem.InviteFriendAction)
+                if (uiState.canViewCaptures) {
+                    uiState.pendingFriendCaptures.takeUnless { it.isEmpty() }?.let { pendingFriendCaptures ->
+                        add(FeedUiItem.CategoryTitle("\uD83D\uDD14 Remind friends to share their takes"))
+                        pendingFriendCaptures.take(3).forEach {
+                            add(FeedUiItem.RemindFriendItem(it))
+                        }
+                    }
+
+                    add(FeedUiItem.InviteFriendAction)
+                }
             }
         }
+    }
 
-        itemsIndexed(items) { index, item ->
+    LazyColumn(modifier = modifier.fillMaxWidth()) {
+        itemsIndexed(items, key = { index, it -> it.getKey(index) }) { index, item ->
             // TODO store info in view model and repository
             when (item) {
                 is FeedUiItem.CaptureUiItem -> {
-                    var liked by remember { mutableStateOf(false) }
+                    var liked by rememberSaveable { mutableStateOf(false) }
                     var isLoading by remember { mutableStateOf(true) }
                     CaptureItemContainer(isLoading = isLoading) {
                         CaptureItem(
@@ -81,6 +87,8 @@ fun FeedItems(
                             userName = item.userName,
                             isHidden = !uiState.canViewCaptures,
                             isLiked = liked,
+                            likesCount = item.likesCount,
+                            canLike = item.canBeLiked,
                             onImageLoaded = { isLoading = false },
                             onLikeChange = { liked = it },
                         )
@@ -175,6 +183,14 @@ private fun CaptureItemContainer(
             },
         content = content
     )
+}
+
+private fun FeedUiItem.getKey(index: Int): String = when (this) {
+    is FeedUiItem.CaptureUiItem -> "capture_$id"
+    is FeedUiItem.CategoryTitle -> title
+    is FeedUiItem.RemindFriendItem -> "user_${user.id.id}"
+    is FeedUiItem.InviteFriendAction -> "invite"
+    is FeedUiItem.CapturePlaceHolder -> "placeholder_$index"
 }
 
 private val ImageRes.drawableResId
