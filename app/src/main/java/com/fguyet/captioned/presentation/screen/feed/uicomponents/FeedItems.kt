@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fguyet.captioned.R
@@ -45,14 +46,15 @@ fun FeedItems(
     onRemindFriend: (user: User) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val items by remember(uiState) {
         derivedStateOf {
             buildList {
                 uiState.userCaptureUiItem?.let {
-                    add(FeedUiItem.CategoryTitle("\uD83D\uDDBC\uFE0F Your take"))
+                    add(FeedUiItem.CategoryTitle(context.getString(R.string.your_take)))
                     add(it)
                 }
-                add(FeedUiItem.CategoryTitle("\uD83D\uDC40 Look at your friends' takes"))
+                add(FeedUiItem.CategoryTitle(context.getString(R.string.look_at_friends_takes)))
                 uiState.friendsCaptureUiItems?.let { addAll(it) } ?: run {
                     repeat(3) {
                         add(FeedUiItem.CapturePlaceHolder)
@@ -61,7 +63,7 @@ fun FeedItems(
 
                 if (uiState.canViewCaptures) {
                     uiState.pendingFriendCaptures.takeUnless { it.isEmpty() }?.let { pendingFriendCaptures ->
-                        add(FeedUiItem.CategoryTitle("\uD83D\uDD14 Remind friends to share their takes"))
+                        add(FeedUiItem.CategoryTitle(context.getString(R.string.remind_friends_to_share_their_takes)))
                         pendingFriendCaptures.take(3).forEach {
                             add(FeedUiItem.RemindFriendItem(it))
                         }
@@ -111,7 +113,6 @@ fun FeedItems(
                 }
 
                 is FeedUiItem.RemindFriendItem -> {
-                    val context = LocalContext.current
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -125,12 +126,12 @@ fun FeedItems(
                         ElevatedButton(
                             modifier = Modifier.padding(vertical = 8.dp),
                             onClick = {
-                                Toast.makeText(context, "Your request was sent! (mocked action)", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, context.getString(R.string.your_request_was_sent, item.user.name), Toast.LENGTH_SHORT).show()
                                 onRemindFriend(item.user)
                             },
                         ) {
                             Text(
-                                text = "\uD83D\uDD14",
+                                text = stringResource(R.string.bell_emoji),
                                 style = MaterialTheme.typography.bodyLarge,
                             )
                         }
@@ -138,18 +139,16 @@ fun FeedItems(
                 }
 
                 is FeedUiItem.InviteFriendAction -> {
-                    val context = LocalContext.current
-
                     ElevatedButton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
                         onClick = {
-                            Toast.makeText(context, "Your invites were sent! (mocked action)", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.your_invites_were_sent), Toast.LENGTH_LONG).show()
                         },
                     ) {
                         Text(
-                            text = "✉\uFE0F Invite friends",
+                            text = stringResource(R.string.invite_friends),
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.fguyet.captioned.R
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -23,7 +24,7 @@ internal fun CaptureScreenRoute(
         if (uiState.isCaptureSaved) {
             Toast.makeText(
                 context,
-                "Capture shared! (mocked action)",
+                context.getString(R.string.capture_shared),
                 Toast.LENGTH_SHORT
             ).show()
             onCaptureCompleted()

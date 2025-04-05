@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fguyet.captioned.R
 import com.fguyet.captioned.core.designsystem.CaptionedButtonConfig
 import com.fguyet.captioned.core.designsystem.CaptionedScreen
 import com.fguyet.captioned.domain.entity.Caption
@@ -52,7 +54,7 @@ internal fun FeedScreen(
             }
         },
         actionButtonConfig = CaptionedButtonConfig(
-            text = "\uD83D\uDCF8  Share your take",
+            text = stringResource(R.string.share_your_take),
             onClick = onCapture,
         ).takeUnless { uiState.isLoading || uiState.canViewCaptures },
     )

@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.fguyet.captioned.R
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -22,7 +23,7 @@ internal fun WelcomeScreenRoute(
         if (uiState.isLoggedIn) {
             Toast.makeText(
                 context,
-                "You are logged in! (mocked action)",
+                context.getString(R.string.you_are_logged_in),
                 Toast.LENGTH_SHORT
             ).show()
             onSignedIn()

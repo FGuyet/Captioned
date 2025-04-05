@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -62,7 +63,7 @@ internal fun CaptureItem(
             model = imageResId,
             onSuccess = { onImageLoaded() },
             contentScale = ContentScale.Crop,
-            contentDescription = "${userName}'s take on today's caption",
+            contentDescription = stringResource(R.string.friends_take_on_todays_caption, userName),
             colorFilter = ColorFilter.tint(Color.DarkGray, blendMode = BlendMode.Darken).takeIf { isHidden }
         )
 
@@ -70,7 +71,7 @@ internal fun CaptureItem(
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
                 model = R.drawable.app_logo,
-                contentDescription = "Hidding layer",
+                contentDescription = stringResource(R.string.hiding_layer),
             )
         }
 
@@ -111,7 +112,7 @@ internal fun CaptureItem(
                             .size(48.dp)
                             .padding(8.dp),
                         model = if (isLiked) R.drawable.ic_filled_heart else R.drawable.ic_empty_heart,
-                        contentDescription = "Hidding layer",
+                        contentDescription = stringResource(R.string.heart),
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                     )
                 }

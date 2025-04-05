@@ -3,4 +3,19 @@
     <string name="welcome_to_captioned">Welcome to Captioned</string>
     <string name="caption_welcome_brief">One caption a day. A million ways to picture it.</string>
     <string name="sign_in">Sign In</string>
+    <string name="your_take">🖼️ Your take</string>
+    <string name="look_at_friends_takes">👀 Look at your friends\' takes</string>
+    <string name="remind_friends_to_share_their_takes">🔔 Remind friends to share their takes</string>
+    <string name="invite_friends">✉️ Invite friends</string>
+    <string name="your_invites_were_sent">Your invites were sent! (mocked action)</string>
+    <string name="your_request_was_sent">Your reminder was sent to %1$s! (mocked action)</string>
+    <string name="bell_emoji">🔔</string>
+    <string name="friends_take_on_todays_caption">%1$s\'s take on today\'s caption</string>
+    <string name="heart">Heart</string>
+    <string name="hiding_layer">Hiding layer</string>
+    <string name="share_your_take">📸  Share your take</string>
+    <string name="todays_caption">💬 Today\'s caption</string>
+    <string name="remaining_time">⏱️ %1$s</string>
+    <string name="capture_shared">Capture shared! (mocked action)</string>
+    <string name="you_are_logged_in">You are logged in! (mocked action)</string>
 </resources>

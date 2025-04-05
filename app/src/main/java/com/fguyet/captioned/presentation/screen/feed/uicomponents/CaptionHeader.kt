@@ -17,7 +17,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.fguyet.captioned.R
 import com.fguyet.captioned.domain.entity.Caption
 import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.delay
@@ -39,7 +41,7 @@ internal fun CaptionHeader(
         Column(modifier = Modifier.weight(1f, fill = true)) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = "\uD83D\uDCAC Today's caption",
+                text = stringResource(R.string.todays_caption),
                 style = MaterialTheme.typography.titleLarge,
             )
 
@@ -96,7 +98,7 @@ internal fun CaptionHeader(
 
             Text(
                 modifier = Modifier.padding(8.dp),
-                text = "⏱️ ${remainingTimeStr ?: ""}",
+                text = stringResource(R.string.remaining_time, remainingTimeStr ?: ""),
                 style = MaterialTheme.typography.titleMedium,
             )
         }
