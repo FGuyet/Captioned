@@ -71,6 +71,10 @@ internal class FeedViewModel(
         }
     }
 
+    suspend fun setLoading(isLoading: Boolean) {
+        updateUiState { copy(isLoading = isLoading) }
+    }
+
     private fun Capture.toCaptureUiItem(isFromActiveUser: Boolean): FeedUiItem.CaptureUiItem = FeedUiItem.CaptureUiItem(
         id = id.id,
         userName = getUserNameUseCase(userId) ?: "Unknown",

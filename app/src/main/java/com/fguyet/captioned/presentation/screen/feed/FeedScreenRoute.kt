@@ -3,9 +3,11 @@ package com.fguyet.captioned.presentation.screen.feed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import com.fguyet.captioned.core.commons.LaunchOnLifecycleEvent
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -23,9 +25,16 @@ internal fun FeedScreenRoute(
         }
     }
 
+    val coroutineScope = rememberCoroutineScope()
+
     FeedScreen(
         modifier = modifier,
-        onCapture = onCapture,
+        onCapture = {
+            coroutineScope.launch {
+                viewModel.setLoading(true)
+                onCapture()
+            }
+        },
         onRemindFriend = { user ->
             viewModel.remindFriend(user)
         },

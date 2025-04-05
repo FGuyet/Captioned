@@ -25,7 +25,6 @@ internal fun CaptionedScreen(
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
     actionButtonConfig: CaptionedButtonConfig? = null,
-    // TODO display loading indicator on screen components instead of full screen
     isLoading: Boolean = false,
 ) {
     Scaffold(
